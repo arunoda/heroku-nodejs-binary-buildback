@@ -11,7 +11,7 @@ set -e
 unset GIT_DIR
 
 # config
-if [ !$NODE_VERSION ]; then
+if [ -z "$NODE_VERSION" ]; then
   NODE_VERSION='0.8.16'
 fi
 
