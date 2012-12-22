@@ -10,12 +10,12 @@ Heroku Buildpack for NodeJS (using official binaries)
 Usage
 -----
 
-#For a new app
+###For a new app
 
     $ heroku create --stack cedar --buildpack https://github.com/arunoda/heroku-nodejs-binary-buildback.git
     $ git push heroku master
 
-#For a existing app
+###For a existing app
 
     $ heroku config:add BUILDPACK_URL=https://github.com/arunoda/heroku-nodejs-binary-buildback.git
     $ git push heroku master
