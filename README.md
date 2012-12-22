@@ -15,7 +15,7 @@ Usage
     $ heroku create --stack cedar --buildpack https://github.com/arunoda/heroku-nodejs-binary-buildback.git
     $ git push heroku master
 
-###For a existing app
+###For an existing app
 
     $ heroku config:add BUILDPACK_URL=https://github.com/arunoda/heroku-nodejs-binary-buildback.git
     $ git push heroku master
@@ -23,7 +23,7 @@ Usage
 Using Custom NodeJS version
 ---------------------------
 
-**Only for versions >= 0.8.x**
+**Only for versions >= 0.8.6**
 
     $ heroku labs:enable user-env-compile -a <app_name>
     $ heroku config:add NODE_VERSION=<node_version>
