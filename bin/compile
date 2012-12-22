@@ -106,6 +106,7 @@ ls $BUILD_DIR/node
 
 # install dependencies with npm
 echo "-----> Installing dependencies with npm"
+$BUILD_DIR/node/bin/npm install -g node-gyp
 cd $BUILD_DIR
 $BUILD_DIR/node/bin/npm install --production
 echo "Dependencies installed" | indent
