@@ -38,7 +38,7 @@ function tar_download() {
 
 # downloading node
 echo "-----> Downloading node"
-tar_download http://nodejs.org/dist/v$NODE_VERSION/node-v*-linux-x64.tar.gz $BUILD_DIR
+tar_download "http://nodejs.org/dist/v$NODE_VERSION/node-v*-linux-x64.tar.gz" $BUILD_DIR
 mv $BUILD_DIR/node-v*-linux-x64 $BUILD_DIR/node
 chmod +x $BUILD_DIR/node/bin/*
 
