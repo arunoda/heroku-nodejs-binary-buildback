@@ -1,0 +1,111 @@
+#!/usr/bin/env bash
+# bin/compile <build-dir> <cache-dir>
+
+# fail fast
+set -e
+
+# debug
+# set -x
+
+# clean up leaking environment
+unset GIT_DIR
+
+# config
+SCONS_VERSION="1.2.0"
+S3_BUCKET="heroku-buildpack-nodejs"
+
+# parse and derive params
+BUILD_DIR=$1
+CACHE_DIR=$2
+LP_DIR=`cd $(dirname $0); cd ..; pwd`
+
+function error() {
+  echo " !     $*" >&2
+  exit 1
+}
+
+function mktmpdir() {
+  dir=$(mktemp -t node-$1-XXXX)
+  rm -rf $dir
+  mkdir -p $dir
+  echo $dir
+}
+
+function indent() {
+  c='s/^/       /'
+  case $(uname) in
+    Darwin) sed -l "$c";;
+    *)      sed -u "$c";;
+  esac
+}
+
+function run_npm() {
+  command="$1"
+
+  cd $BUILD_DIR
+  HOME="$BUILD_DIR" $VENDORED_NODE/bin/node $VENDORED_NPM/cli.js $command 2>&1 | indent
+
+  if [ "${PIPESTATUS[*]}" != "0 0" ]; then
+    echo " !     Failed to $command dependencies with npm"
+    exit 1
+  fi
+}
+
+function manifest_versions() {
+  curl "http://${S3_BUCKET}.s3.amazonaws.com/manifest.${1}" -s -o - | tr -s '\n' ' '
+}
+
+function resolve_version() {
+  available_versions="$1"
+  requested_version="$2"
+  default_version="$3"
+
+  if [ "$2" == "" ]; then
+    echo $3
+  else
+    args=""
+    for version in $available_versions; do args="${args} -v \"${version}\""; done
+    for version in $requested_version; do args="${args} -r \"${version}\""; done
+    evaluated_version=$(eval $bootstrap_node/bin/node $LP_DIR/vendor/node-semver/bin/semver ${args} || echo "")
+    echo "$evaluated_version" | tail -n 1
+  fi
+}
+
+function package_engine_version() {
+  version=$(cat $BUILD_DIR/package.json | $bootstrap_node/bin/node $LP_DIR/vendor/json/json engines.$1 2>/dev/null)
+  if [ $? == 0 ]; then
+    echo $version | sed -e 's/\([<>=]\) /\1/g'
+  fi
+}
+
+function package_resolve_version() {
+  engine="$1"
+  resolved_version=$(resolve_version "${engine_versions[$engine]}" "${engine_requests[$engine]}" "${engine_defaults[$engine]}")
+
+  if [ "${resolved_version}" == "" ]; then
+    error "Requested engine $engine version ${engine_requests[$engine]} does not match available versions: ${engine_versions[$engine]}"
+  else
+    echo $resolved_version
+  fi
+}
+
+function tar_download() {
+  url="$1"
+  location="$2"
+
+  mkdir -p $location
+  curl $url -s -o - | tar xzf - -C $location
+}
+
+# downloading node
+echo "-----> Downloading node"
+tar_download http://nodejs.org/dist/v0.8.16/node-v0.8.16-linux-x64.tar.gz "node"
+
+# install dependencies with npm
+echo "-----> Installing dependencies with npm"
+./node/bin/npm install --production
+echo "Dependencies installed" | indent
+
+echo "-----> Building runtime environment"
+mkdir -p $BUILD_DIR/.profile.d
+echo "export PATH=\"\$HOME/node/bin:$HOME/bin:\$HOME/node_modules/.bin:\$PATH\"" > $BUILD_DIR/.profile.d/nodejs.sh
