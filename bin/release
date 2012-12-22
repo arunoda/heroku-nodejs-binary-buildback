@@ -4,5 +4,5 @@
 cat <<EOF
 ---
 config_vars:
-  PATH: qr/qrencode-3.4.1:bin:node_modules/.bin:/usr/local/bin:/usr/bin:/bin
+  PATH: node_modules/.bin:/usr/local/bin:/usr/bin:/bin
 EOF

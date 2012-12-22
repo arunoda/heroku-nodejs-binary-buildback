@@ -20,6 +20,14 @@ BUILD_DIR=$1
 CACHE_DIR=$2
 LP_DIR=`cd $(dirname $0); cd ..; pwd`
 
+function indent() {
+  c='s/^/       /'
+  case $(uname) in
+    Darwin) sed -l "$c";;
+    *)      sed -u "$c";;
+  esac
+}
+
 function tar_download() {
   url="$1"
   location="$2"
@@ -33,13 +41,19 @@ echo "-----> Downloading node"
 tar_download http://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.gz $BUILD_DIR
 mv $BUILD_DIR/node-v$NODE_VERSION-linux-x64 $BUILD_DIR/node
 chmod +x $BUILD_DIR/node/bin/*
-ls $BUILD_DIR/node
+
+#adding node to the build's $PATH
+PATH=$PATH:$BUILD_DIR/node/bin
+echo "node version $NODE_VERSION has been installed" | indent
+
+echo "-----> Installing latest node-gyp"
+npm install -g node-gyp
+echo "Installed latest node-gyp" | indent
 
 # install dependencies with npm
 echo "-----> Installing dependencies with npm"
-$BUILD_DIR/node/bin/npm install -g node-gyp
 cd $BUILD_DIR
-$BUILD_DIR/node/bin/npm install --production
+npm install --production
 echo "Dependencies installed" | indent
 
 echo "-----> Building runtime environment"
