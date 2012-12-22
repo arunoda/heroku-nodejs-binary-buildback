@@ -5,7 +5,7 @@ Heroku Buildpack for NodeJS (using official binaries)
 * It uses binaries from nodejs.org and you are up to date always
 * This includes latest version of node-gyp(0.8.x) too 
 
-Default NodeJS version: 0.8.16
+**Default NodeJS version: 0.8.16**
 
 Usage
 -----
