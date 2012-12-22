@@ -48,7 +48,7 @@ echo "node version $NODE_VERSION has been installed" | indent
 
 echo "-----> Installing latest node-gyp"
 npm install -g node-gyp
-echo "Installed latest node-gyp" | indent
+echo "Installed latest node-gyp version `node-gyp -v`" | indent
 
 # install dependencies with npm
 echo "-----> Installing dependencies with npm"
