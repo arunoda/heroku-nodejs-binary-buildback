@@ -100,7 +100,7 @@ function tar_download() {
 # downloading node
 echo "-----> Downloading node"
 tar_download http://nodejs.org/dist/v0.8.16/node-v0.8.16-linux-x64.tar.gz "node"
-ls
+ls node
 
 # install dependencies with npm
 echo "-----> Installing dependencies with npm"
