@@ -22,7 +22,7 @@ Usage
 Using Custom NodeJS version
 ---------------------------
 
-** Only for versions >= 0.8.x **
+**Only for versions >= 0.8.x**
 
     $ heroku labs:enable user-env-compile -a <app_name>
     $ heroku config:add NODE_VERSION=<node_version>
