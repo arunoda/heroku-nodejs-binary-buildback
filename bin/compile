@@ -12,7 +12,7 @@ unset GIT_DIR
 
 # config
 if [ -z "$NODE_VERSION" ]; then
-  NODE_VERSION='0.8.16'
+  NODE_VERSION='0.8.18'
 fi
 
 # parse and derive params
@@ -45,10 +45,6 @@ chmod +x $BUILD_DIR/node/bin/*
 #adding node to the build's $PATH
 PATH=$PATH:$BUILD_DIR/node/bin
 echo "node version $NODE_VERSION has been installed" | indent
-
-echo "-----> Installing latest node-gyp"
-npm install -g node-gyp
-echo "Installed latest node-gyp version `node-gyp -v`" | indent
 
 # install dependencies with npm
 echo "-----> Installing dependencies with npm"
