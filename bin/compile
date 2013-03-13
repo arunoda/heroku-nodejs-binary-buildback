@@ -49,6 +49,13 @@ echo "node version $NODE_VERSION has been installed" | indent
 # install dependencies with npm
 echo "-----> Installing dependencies with npm"
 cd $BUILD_DIR
+
+#dealing with custom package.json file
+if [ "$ALTERNATE_PACKAGE_JSON" ]; then
+  echo "-----> Using altenate package.json file: $ALTERNATE_PACKAGE_JSON" 
+  mv $ALTERNATE_PACKAGE_JSON package.json
+fi
+
 npm install --production
 echo "Dependencies installed" | indent
 

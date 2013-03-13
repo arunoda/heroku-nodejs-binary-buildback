@@ -26,3 +26,12 @@ Using Custom NodeJS version
 
     $ heroku labs:enable user-env-compile -a <app_name> #one time action
     $ heroku config:add NODE_VERSION=<node_version>
+
+Using Alternate package.json
+--------------------------
+For a large scale app, we might have to deal with several heroku apps. Specially in case where we need to fire more than 1 web processes in a single app. 
+
+For those situations, we need to use separate package.json files. This is how we can do with this buildpack.
+
+    $ heroku labs:enable user-env-compile -a <app_name>
+    $ heroku config:add ALTERNATE_PACKAGE_JSON=your-alternate-package.json
