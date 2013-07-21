@@ -4,7 +4,7 @@ Heroku Buildpack for NodeJS (using official binaries)
 * This is a [Heroku buildpack](http://devcenter.heroku.com/articles/buildpacks) for Node.js apps.
 * It uses binaries from nodejs.org and you are up to date always
 
-Default NodeJS version: 0.10.0
+Default NodeJS version: 0.10.13
 
 Usage
 -----
