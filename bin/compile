@@ -12,7 +12,7 @@ unset GIT_DIR
 
 # config
 if [ -z "$NODE_VERSION" ]; then
-  NODE_VERSION='0.10.0'
+  NODE_VERSION='0.10.13'
 fi
 
 # parse and derive params
